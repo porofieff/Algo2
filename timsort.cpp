@@ -31,7 +31,7 @@ int get_minrun(int n)
 	    return n + r;
 	}
 
-    void insert_sort(Vector<int>& arr, int left, int right)
+void insert_sort(Vector<int>& arr, int left, int right)
 {
     for (int i = left + 1; i <= right; i++)
     {
@@ -45,43 +45,6 @@ int get_minrun(int n)
         }
 
         arr[j+1] = curr;
-    }
-}
-
-void merge(Vector<int>& arr, int left, int mid, int right)
-{
-    int len1 = mid - left + 1;
-    int len2 = right - mid;
-
-    Vector<int> left_arr(len1);
-    Vector<int> right_arr(len2);
-
-    for (int i = 0; i < len1; i++)
-    {
-        left_arr[i] = arr[left + i];
-    }
-
-    for (int i = 0; i < len2; i++)
-    {
-        right_arr[i] = arr[mid + 1 + i];
-    }
-
-    int i = 0, j = 0, k = left;
-
-    while (i < len1 && j < len2)
-    {
-        if (left_arr[i] <= right_arr[j]) arr[k++] = left_arr[i++];
-        else arr[k++] = right_arr[j++];
-    }
-
-    while (i < len1)
-    {
-        arr[k++] = left_arr[i++];
-    }
-
-    while (j < len2)
-    {
-        arr[k++] = right_arr[j++];
     }
 }
 
@@ -132,6 +95,43 @@ void galloping(Vector<int> &arr, Vector<int> &sub, int &left_curr, int &right_cu
     }
 }
 
+void merge(Vector<int>& arr, int left, int mid, int right)
+{
+    int len1 = mid - left + 1;
+    int len2 = right - mid;
+
+    Vector<int> left_arr(len1);
+    Vector<int> right_arr(len2);
+
+    for (int i = 0; i < len1; i++)
+    {
+        left_arr[i] = arr[left + i];
+    }
+
+    for (int i = 0; i < len2; i++)
+    {
+        right_arr[i] = arr[mid + 1 + i];
+    }
+
+    int i = 0, j = 0, k = left;
+
+    while (i < len1 && j < len2)
+    {
+        if (left_arr[i] <= right_arr[j]) arr[k++] = left_arr[i++];
+        else arr[k++] = right_arr[j++];
+    }
+
+    while (i < len1)
+    {
+        arr[k++] = left_arr[i++];
+    }
+
+    while (j < len2)
+    {
+        arr[k++] = right_arr[j++];
+    }
+}
+
 void tim_sort(Vector<int>& arr)
 {
     int n = arr.get_size();
@@ -162,16 +162,10 @@ int main()
     srand(time (NULL));
 
     int size;
-    cout << "Введите число элементов" << std::endl << "> ";
+    cout << "Введите число элементов" << endl << ">>> ";
     cin >> size;
 
     Vector<int> vec(size+1);
-
-    for (int i; i < size; i++)
-    {
-        vec.add(i, 0);
-    }
-
     cout << vec;
 
     for (int i = 0; i < size; i++)
@@ -181,7 +175,62 @@ int main()
 
     cout << vec;
 
-    tim_sort(vec);
+    while(true)
+    {
+        int choice = 0;
 
-    cout << vec;
+        cout << "1) Изменить число элементов (сейчас: " << size << ")" << endl;
+        cout << "2) Вывести массив" << endl;
+        cout << "3) Отсортировать массив" << endl;
+        cout << "0) Выход" << endl;
+        cout << ">>> ";
+
+        cin >> choice;
+        cout << endl;
+
+        if(choice == 1)
+        {
+            int new_size = 1;
+
+            cout << "Cейчас элементов: " << size << endl;
+            cout << "Новый размер = ";
+            cin >> new_size;
+            cout << endl;
+
+            Vector<int> new_vec(new_size + 1);
+            for (int i = 0; i < new_size; i++)
+            {
+                new_vec.push_back(rand() % 1001);
+            }
+
+            vec = new_vec;
+            size = new_size;
+
+            cout << vec;
+            system("clear");
+        }
+        else if (choice == 2)
+        {
+            system("clear");
+            cout << "Начальный массив: " << endl;
+            cout << vec << endl;
+        }
+        else if (choice == 3)
+        {
+            tim_sort(vec);
+
+            system("clear");
+            cout << "Отсортированный массив: " << endl;
+            cout << vec << endl;
+        }
+        else if (choice == 0)
+        {
+            break;
+        }
+        else
+        {
+            system("clear");
+            cout << "Вы ввели неверное значение!!!" << endl;
+        }
+    }
 }
